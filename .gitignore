@@ -1,0 +1,29 @@
+# Dependencies
+node_modules/
+
+# Next.js
+.next/
+out/
+
+# Build
+build/
+dist/
+
+# Env files (secrets)
+.env
+.env.local
+.env*.local
+
+# IDE & OS
+.DS_Store
+*.pem
+
+# Debug
+*.log
+npm-debug.log*
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
