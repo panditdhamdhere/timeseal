@@ -71,7 +71,7 @@ export function CapsuleCard({
 
   return (
     <div
-      className={`rounded-xl border border-[var(--border)] bg-gradient-to-br ${themeClass} p-5 transition-all hover:border-[var(--accent-dim)]/50`}
+      className={`card-hover rounded-xl border border-[var(--border)] bg-gradient-to-br ${themeClass} p-5`}
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0 flex-1">
@@ -123,7 +123,7 @@ export function CapsuleCard({
             {isUnlockable && onOpen && (
               <button
                 onClick={() => onOpen(capsule.capsuleId)}
-                className="rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--background)] transition-colors hover:opacity-90"
+                className="btn-primary rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--background)]"
               >
                 Open Capsule
               </button>
@@ -131,7 +131,7 @@ export function CapsuleCard({
             {onAddETH && (
               <button
                 onClick={() => onAddETH(capsule.capsuleId)}
-                className="rounded-lg border border-[var(--border)] px-4 py-2 text-sm text-[var(--foreground)] transition-colors hover:bg-[var(--surface-hover)]"
+                className="rounded-lg border border-[var(--border)] px-4 py-2 text-sm text-[var(--foreground)] transition-all duration-200 hover:bg-[var(--surface-hover)] hover:border-[var(--accent-dim)]/50"
               >
                 Add ETH
               </button>

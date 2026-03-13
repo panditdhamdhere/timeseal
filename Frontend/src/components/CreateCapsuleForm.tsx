@@ -71,7 +71,7 @@ export function CreateCapsuleForm() {
 
   if (isSuccess) {
     return (
-      <div className="rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center">
+      <div className="animate-scale-in rounded-xl border border-emerald-500/30 bg-emerald-500/10 p-6 text-center">
         <p className="text-lg font-medium text-emerald-400">
           Capsule created successfully!
         </p>
@@ -81,7 +81,7 @@ export function CreateCapsuleForm() {
         </p>
         <button
           onClick={handleCreateAnother}
-          className="mt-4 rounded-lg bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--background)] hover:opacity-90"
+          className="btn-primary mt-4 rounded-xl bg-[var(--accent)] px-4 py-2 text-sm font-medium text-[var(--background)]"
         >
           Create Another
         </button>
@@ -92,7 +92,7 @@ export function CreateCapsuleForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-6 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6"
+      className="animate-fade-in-up space-y-6 rounded-xl border border-[var(--border)] bg-[var(--surface)]/80 p-5 shadow-lg sm:p-6"
     >
       <h2 className="text-xl font-semibold text-[var(--accent)]">
         Seal a Time Capsule
@@ -108,7 +108,7 @@ export function CreateCapsuleForm() {
           onChange={(e) => setRecipient(e.target.value)}
           placeholder="0x..."
           required
-          className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+          className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-[var(--foreground)] placeholder:text-[var(--muted)] transition-all duration-200 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30"
         />
       </div>
 
@@ -122,7 +122,7 @@ export function CreateCapsuleForm() {
           placeholder="Your encrypted message (encrypt before pasting)"
           required
           rows={4}
-          className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+          className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-[var(--foreground)] placeholder:text-[var(--muted)] transition-all duration-200 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30"
         />
         <p className="mt-1 text-xs text-[var(--muted)]">
           Encrypt your message with a tool of your choice before pasting.
@@ -165,7 +165,7 @@ export function CreateCapsuleForm() {
         <select
           value={theme}
           onChange={(e) => setTheme(e.target.value)}
-          className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-[var(--foreground)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+          className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-[var(--foreground)] transition-all duration-200 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30"
         >
           {THEMES.map((t) => (
             <option key={t} value={t}>
@@ -184,7 +184,7 @@ export function CreateCapsuleForm() {
           value={ethAmount}
           onChange={(e) => setEthAmount(e.target.value)}
           placeholder="0"
-          className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-[var(--accent)] focus:outline-none focus:ring-1 focus:ring-[var(--accent)]"
+          className="mt-1 w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-[var(--foreground)] placeholder:text-[var(--muted)] transition-all duration-200 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30"
         />
       </div>
 
@@ -207,7 +207,7 @@ export function CreateCapsuleForm() {
       <button
         type="submit"
         disabled={isPending || isConfirming}
-        className="w-full rounded-lg bg-[var(--accent)] py-3 font-medium text-[var(--background)] transition-colors hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+        className="btn-primary w-full rounded-xl bg-[var(--accent)] py-3 font-medium text-[var(--background)] disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:transform-none"
       >
         {isPending || isConfirming ? "Sealing..." : "Seal Capsule"}
       </button>

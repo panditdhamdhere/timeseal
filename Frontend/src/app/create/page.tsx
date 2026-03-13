@@ -9,18 +9,18 @@ export default function CreatePage() {
   const { isConnected } = useAccount();
 
   return (
-    <div className="min-h-screen">
+    <div className="relative min-h-screen min-h-[100dvh]">
       <Header />
-      <main className="mx-auto max-w-2xl px-4 py-12 sm:px-6 lg:px-8">
+      <main className="relative z-10 mx-auto w-full max-w-[min(800px,96vw)] px-4 py-8 sm:py-12 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="mb-6 inline-block text-sm text-[var(--muted)] hover:text-[var(--foreground)]"
+          className="mb-6 inline-flex items-center gap-1 text-sm text-[var(--muted)] transition-colors hover:text-[var(--foreground)]"
         >
           ← Back
         </Link>
 
         {!isConnected ? (
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-8 text-center">
+          <div className="animate-fade-in-up rounded-xl border border-[var(--border)] bg-[var(--surface)]/80 p-8 text-center">
             <p className="text-[var(--muted)]">
               Connect your wallet to create a time capsule.
             </p>

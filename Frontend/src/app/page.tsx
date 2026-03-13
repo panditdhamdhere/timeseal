@@ -3,77 +3,85 @@ import { Header } from "@/components/Header";
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen">
+    <div className="relative min-h-screen min-h-[100dvh]">
       <Header />
-      <main className="mx-auto max-w-6xl px-4 py-16 sm:px-6 lg:px-8">
+      <main className="relative z-10 mx-auto w-full max-w-[min(1600px,96vw)] px-4 py-8 sm:py-12 md:py-16 sm:px-6 lg:px-8">
         <section className="text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-[var(--foreground)] sm:text-5xl lg:text-6xl">
+          <h1 className="animate-fade-in-up text-3xl font-bold tracking-tight text-[var(--foreground)] sm:text-4xl md:text-5xl lg:text-6xl">
             Seal messages for the{" "}
-            <span className="text-[var(--accent)]">future</span>
+            <span className="bg-gradient-to-r from-[var(--accent)] to-amber-400 bg-clip-text text-transparent">
+              future
+            </span>
           </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-[var(--muted)]">
+          <p className="animate-fade-in-up animate-delay-100 mx-auto mt-4 max-w-2xl text-base text-[var(--muted)] sm:mt-6 sm:text-lg">
             Lock encrypted messages and optional ETH for loved ones. They can
             open your time capsule only after the unlock date.
           </p>
-          <div className="mt-10 flex flex-wrap justify-center gap-4">
+          <div className="animate-fade-in-up animate-delay-200 mt-8 flex flex-wrap justify-center gap-3 sm:mt-10 sm:gap-4">
             <Link
               href="/create"
-              className="rounded-full bg-[var(--accent)] px-8 py-3 font-medium text-[var(--background)] transition-opacity hover:opacity-90"
+              className="btn-primary rounded-full bg-[var(--accent)] px-6 py-2.5 font-medium text-[var(--background)] sm:px-8 sm:py-3"
             >
               Create Capsule
             </Link>
             <Link
               href="/capsules"
-              className="rounded-full border border-[var(--border)] px-8 py-3 font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--surface)]"
+              className="btn-primary rounded-full border border-[var(--border)] px-6 py-2.5 font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--surface)] sm:px-8 sm:py-3"
             >
               My Capsules
             </Link>
           </div>
         </section>
 
-        <section className="mt-24 grid gap-8 sm:grid-cols-3">
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-            <div className="text-2xl">🔐</div>
-            <h3 className="mt-3 font-semibold text-[var(--foreground)]">
-              Encrypted & Secure
-            </h3>
-            <p className="mt-2 text-sm text-[var(--muted)]">
-              Encrypt your message before sealing. Only the recipient can open
-              after the unlock date.
-            </p>
-          </div>
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-            <div className="text-2xl">⏳</div>
-            <h3 className="mt-3 font-semibold text-[var(--foreground)]">
-              Time-Locked
-            </h3>
-            <p className="mt-2 text-sm text-[var(--muted)]">
-              Set any unlock date at least 1 hour in the future. The capsule
-              cannot be opened before then.
-            </p>
-          </div>
-          <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6">
-            <div className="text-2xl">💰</div>
-            <h3 className="mt-3 font-semibold text-[var(--foreground)]">
-              Optional ETH
-            </h3>
-            <p className="mt-2 text-sm text-[var(--muted)]">
-              Add ETH to your capsule. When opened, it transfers automatically
-              to the recipient.
-            </p>
-          </div>
+        <section className="mt-16 grid gap-4 sm:mt-20 sm:grid-cols-3 sm:gap-6 lg:gap-8">
+          {[
+            {
+              icon: "🔐",
+              title: "Encrypted & Secure",
+              desc: "Encrypt your message before sealing. Only the recipient can open after the unlock date.",
+              delay: "300ms",
+            },
+            {
+              icon: "⏳",
+              title: "Time-Locked",
+              desc: "Set any unlock date at least 1 hour in the future. The capsule cannot be opened before then.",
+              delay: "400ms",
+            },
+            {
+              icon: "💰",
+              title: "Optional ETH",
+              desc: "Add ETH to your capsule. When opened, it transfers automatically to the recipient.",
+              delay: "500ms",
+            },
+          ].map((item, i) => (
+            <div
+              key={item.title}
+              className="card-hover animate-fade-in-up rounded-xl border border-[var(--border)] bg-[var(--surface)]/80 p-5 sm:p-6"
+              style={{ animationDelay: item.delay }}
+            >
+              <div className="text-2xl transition-transform duration-300 group-hover:scale-110">
+                {item.icon}
+              </div>
+              <h3 className="mt-3 font-semibold text-[var(--foreground)]">
+                {item.title}
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
+                {item.desc}
+              </p>
+            </div>
+          ))}
         </section>
 
-        <section className="mt-16 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-8 text-center">
-          <h2 className="text-xl font-semibold text-[var(--foreground)]">
+        <section className="animate-fade-in-up animate-delay-500 mt-12 rounded-2xl border border-[var(--border)] bg-gradient-to-br from-[var(--surface)] to-[var(--surface)]/50 p-6 text-center shadow-xl sm:mt-16 sm:p-8">
+          <h2 className="text-lg font-semibold text-[var(--foreground)] sm:text-xl">
             Ready to send a message through time?
           </h2>
-          <p className="mt-2 text-[var(--muted)]">
+          <p className="mt-2 text-sm text-[var(--muted)] sm:text-base">
             Connect your wallet to create your first time capsule.
           </p>
           <Link
             href="/create"
-            className="mt-4 inline-block rounded-lg bg-[var(--accent)] px-6 py-2 font-medium text-[var(--background)] hover:opacity-90"
+            className="btn-primary mt-4 inline-block rounded-xl bg-[var(--accent)] px-6 py-2.5 font-medium text-[var(--background)]"
           >
             Get Started
           </Link>

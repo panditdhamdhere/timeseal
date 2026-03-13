@@ -33,11 +33,11 @@ export function AddETHModal({ capsuleId, onClose }: AddETHModalProps) {
   if (isSuccess) {
     return (
       <div
-        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-fade-in backdrop-blur-sm"
         onClick={onClose}
       >
         <div
-          className="rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 max-w-md w-full"
+          className="animate-scale-in rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 max-w-md w-full shadow-2xl"
           onClick={(e) => e.stopPropagation()}
         >
           <p className="text-center text-emerald-400 font-medium">
@@ -45,7 +45,7 @@ export function AddETHModal({ capsuleId, onClose }: AddETHModalProps) {
           </p>
           <button
             onClick={onClose}
-            className="mt-4 w-full rounded-lg bg-[var(--accent)] py-2 text-[var(--background)]"
+            className="btn-primary mt-4 w-full rounded-xl bg-[var(--accent)] py-2 text-[var(--background)]"
           >
             Close
           </button>
@@ -56,12 +56,12 @@ export function AddETHModal({ capsuleId, onClose }: AddETHModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 animate-fade-in backdrop-blur-sm"
       onClick={onClose}
     >
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-md rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6"
+        className="animate-scale-in w-full max-w-md rounded-xl border border-[var(--border)] bg-[var(--surface)] p-6 shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         <h3 className="text-lg font-semibold text-[var(--accent)]">
@@ -74,7 +74,7 @@ export function AddETHModal({ capsuleId, onClose }: AddETHModalProps) {
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Amount in ETH"
             required
-            className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-[var(--foreground)] placeholder:text-[var(--muted)] focus:border-[var(--accent)] focus:outline-none"
+            className="w-full rounded-lg border border-[var(--border)] bg-[var(--background)] px-4 py-2.5 text-[var(--foreground)] placeholder:text-[var(--muted)] transition-all duration-200 focus:border-[var(--accent)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30"
           />
         </div>
         {error && <p className="mt-2 text-sm text-red-400">{error.message}</p>}
@@ -82,14 +82,14 @@ export function AddETHModal({ capsuleId, onClose }: AddETHModalProps) {
           <button
             type="button"
             onClick={onClose}
-            className="flex-1 rounded-lg border border-[var(--border)] py-2 text-[var(--foreground)]"
+            className="flex-1 rounded-xl border border-[var(--border)] py-2 text-[var(--foreground)] transition-colors hover:bg-[var(--surface-hover)]"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isPending || isConfirming}
-            className="flex-1 rounded-lg bg-[var(--accent)] py-2 text-[var(--background)] disabled:opacity-50"
+            className="btn-primary flex-1 rounded-xl bg-[var(--accent)] py-2 text-[var(--background)] disabled:opacity-50 disabled:hover:transform-none"
           >
             {isPending || isConfirming ? "Adding..." : "Add ETH"}
           </button>
