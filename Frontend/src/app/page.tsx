@@ -56,7 +56,7 @@ export default function HomePage() {
           ].map((item, i) => (
             <div
               key={item.title}
-              className="card-hover animate-fade-in-up rounded-xl border border-[var(--border)] bg-[var(--surface)]/80 p-5 sm:p-6"
+              className="card-hover glass-card animate-fade-in-up p-5 sm:p-6"
               style={{ animationDelay: item.delay }}
             >
               <div className="text-2xl transition-transform duration-300 group-hover:scale-110">
@@ -72,7 +72,7 @@ export default function HomePage() {
           ))}
         </section>
 
-        <section className="animate-fade-in-up animate-delay-500 mt-12 rounded-2xl border border-[var(--border)] bg-gradient-to-br from-[var(--surface)] to-[var(--surface)]/50 p-6 text-center shadow-xl sm:mt-16 sm:p-8">
+        <section className="glass-panel animate-fade-in-up animate-delay-500 mt-12 p-6 text-center sm:mt-16 sm:p-8">
           <h2 className="text-lg font-semibold text-[var(--foreground)] sm:text-xl">
             Ready to send a message through time?
           </h2>
