@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther, isAddress } from "viem";
+import { toast } from "sonner";
 import { TIMESEAL_ABI, TIMESEAL_ADDRESS } from "@/lib/abis/timeseal";
 
 const THEMES = ["Birthday", "Milestone", "Future Self", "Legacy"];
@@ -20,13 +21,26 @@ export function CreateCapsuleForm() {
     writeContract,
     data: hash,
     isPending,
-    error,
     reset,
   } = useWriteContract();
 
   const { isLoading: isConfirming, isSuccess } = useWaitForTransactionReceipt({
     hash,
   });
+
+  useEffect(() => {
+    if (hash && isPending) {
+      toast.info("Submitting capsule transaction...", {
+        description: "Please confirm the transaction in your wallet.",
+      });
+    }
+  }, [hash, isPending]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("Capsule sealed successfully!");
+    }
+  }, [isSuccess]);
 
   const minUnlock = new Date(Date.now() + 60 * 60 * 1000); // 1 hour from now
   const minDate = minUnlock.toISOString().slice(0, 10);
@@ -36,7 +50,9 @@ export function CreateCapsuleForm() {
     e.preventDefault();
     if (!recipient || !message || !unlockDate || !unlockTime) return;
     if (!isAddress(recipient)) {
-      alert("Invalid recipient address");
+      toast.error("Invalid recipient address", {
+        description: "Please enter a valid Ethereum address starting with 0x.",
+      });
       return;
     }
 
@@ -45,17 +61,31 @@ export function CreateCapsuleForm() {
     );
     const oneHour = 60 * 60;
     if (unlockTimestamp < BigInt(Math.floor(Date.now() / 1000) + oneHour)) {
-      alert("Unlock time must be at least 1 hour in the future");
+      toast.error("Unlock time is too soon", {
+        description: "It must be at least 1 hour in the future.",
+      });
       return;
     }
 
-    writeContract({
-      address: TIMESEAL_ADDRESS,
-      abi: TIMESEAL_ABI,
-      functionName: "createCapsule",
-      args: [recipient as `0x${string}`, message, unlockTimestamp, theme, isPublic],
-      value: ethAmount ? parseEther(ethAmount) : BigInt(0),
-    });
+    try {
+      writeContract({
+        address: TIMESEAL_ADDRESS,
+        abi: TIMESEAL_ABI,
+        functionName: "createCapsule",
+        args: [
+          recipient as `0x${string}`,
+          message,
+          unlockTimestamp,
+          theme,
+          isPublic,
+        ],
+        value: ethAmount ? parseEther(ethAmount) : BigInt(0),
+      });
+    } catch (error: any) {
+      toast.error("Failed to create capsule", {
+        description: error?.shortMessage || error?.message || "Unknown error",
+      });
+    }
   };
 
   const handleCreateAnother = () => {
@@ -199,10 +229,6 @@ export function CreateCapsuleForm() {
           Make this capsule public (visible in gallery)
         </span>
       </label>
-
-      {error && (
-        <p className="text-sm text-red-400">{error.message}</p>
-      )}
 
       <button
         type="submit"

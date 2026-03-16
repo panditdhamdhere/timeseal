@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther } from "viem";
+import { toast } from "sonner";
 import { TIMESEAL_ABI, TIMESEAL_ADDRESS } from "@/lib/abis/timeseal";
 
 type AddETHModalProps = {
@@ -18,16 +19,36 @@ export function AddETHModal({ capsuleId, onClose }: AddETHModalProps) {
     hash,
   });
 
+  useEffect(() => {
+    if (hash && isPending) {
+      toast.info("Adding ETH to capsule...", {
+        description: "Confirm the transaction in your wallet.",
+      });
+    }
+  }, [hash, isPending]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success("ETH added to capsule");
+    }
+  }, [isSuccess]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!amount || parseFloat(amount) <= 0) return;
-    writeContract({
-      address: TIMESEAL_ADDRESS,
-      abi: TIMESEAL_ABI,
-      functionName: "addETHToCapsule",
-      args: [capsuleId],
-      value: parseEther(amount),
-    });
+    try {
+      writeContract({
+        address: TIMESEAL_ADDRESS,
+        abi: TIMESEAL_ABI,
+        functionName: "addETHToCapsule",
+        args: [capsuleId],
+        value: parseEther(amount),
+      });
+    } catch (err: any) {
+      toast.error("Failed to add ETH", {
+        description: err?.shortMessage || err?.message || "Unknown error",
+      });
+    }
   };
 
   if (isSuccess) {
