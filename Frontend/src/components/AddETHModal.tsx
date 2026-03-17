@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther } from "viem";
 import { toast } from "sonner";
@@ -12,6 +13,7 @@ type AddETHModalProps = {
 };
 
 export function AddETHModal({ capsuleId, onClose }: AddETHModalProps) {
+  const queryClient = useQueryClient();
   const [amount, setAmount] = useState("");
 
   const { writeContract, data: hash, isPending, error } = useWriteContract();
@@ -30,8 +32,11 @@ export function AddETHModal({ capsuleId, onClose }: AddETHModalProps) {
   useEffect(() => {
     if (isSuccess) {
       toast.success("ETH added to capsule");
+      queryClient.invalidateQueries({
+        predicate: (q) => Array.isArray(q.queryKey) && q.queryKey[0] === "wagmi",
+      });
     }
-  }, [isSuccess]);
+  }, [isSuccess, queryClient]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

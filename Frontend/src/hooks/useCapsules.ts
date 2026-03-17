@@ -13,6 +13,7 @@ export function useReceivedCapsules() {
     functionName: "getCapsulesByRecipient",
     args: address ? [address] : undefined,
     chainId: chainId && chainId > 0 ? chainId : undefined,
+    query: { staleTime: 0 },
   });
 
   const idsArray = ids && Array.isArray(ids) ? ids : [];
@@ -26,7 +27,7 @@ export function useReceivedCapsules() {
 
   const { data: capsulesData, refetch: refetchCapsules } = useReadContracts({
     contracts,
-    query: { enabled: contracts.length > 0 },
+    query: { enabled: contracts.length > 0, staleTime: 0 },
   });
 
   const capsules: Capsule[] = [];
@@ -55,6 +56,7 @@ export function useSentCapsules() {
     functionName: "getCapsulesBySender",
     args: address ? [address] : undefined,
     chainId: chainId && chainId > 0 ? chainId : undefined,
+    query: { staleTime: 0 },
   });
 
   const idsArray = ids && Array.isArray(ids) ? ids : [];
@@ -68,7 +70,7 @@ export function useSentCapsules() {
 
   const { data: capsulesData, refetch: refetchCapsules } = useReadContracts({
     contracts,
-    query: { enabled: contracts.length > 0 },
+    query: { enabled: contracts.length > 0, staleTime: 0 },
   });
 
   const capsules: Capsule[] = [];
@@ -95,6 +97,7 @@ export function usePublicCapsules() {
     abi: TIMESEAL_ABI,
     functionName: "getPublicCapsules",
     chainId: chainId && chainId > 0 ? chainId : undefined,
+    query: { staleTime: 0 },
   });
 
   const idsArray = ids && Array.isArray(ids) ? ids : [];
@@ -108,7 +111,7 @@ export function usePublicCapsules() {
 
   const { data: capsulesData } = useReadContracts({
     contracts,
-    query: { enabled: contracts.length > 0 },
+    query: { enabled: contracts.length > 0, staleTime: 0 },
   });
 
   const capsules: Capsule[] = [];

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { parseEther, isAddress } from "viem";
 import { toast } from "sonner";
@@ -9,6 +10,7 @@ import { TIMESEAL_ABI, TIMESEAL_ADDRESS } from "@/lib/abis/timeseal";
 const THEMES = ["Birthday", "Milestone", "Future Self", "Legacy"];
 
 export function CreateCapsuleForm() {
+  const queryClient = useQueryClient();
   const [recipient, setRecipient] = useState("");
   const [message, setMessage] = useState("");
   const [unlockDate, setUnlockDate] = useState("");
@@ -39,8 +41,12 @@ export function CreateCapsuleForm() {
   useEffect(() => {
     if (isSuccess) {
       toast.success("Capsule sealed successfully!");
+      // Invalidate wagmi read queries so My Capsules & Gallery refetch
+      queryClient.invalidateQueries({
+        predicate: (q) => Array.isArray(q.queryKey) && q.queryKey[0] === "wagmi",
+      });
     }
-  }, [isSuccess]);
+  }, [isSuccess, queryClient]);
 
   const minUnlock = new Date(Date.now() + 60 * 60 * 1000); // 1 hour from now
   const minDate = minUnlock.toISOString().slice(0, 10);
