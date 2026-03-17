@@ -1,17 +1,18 @@
 "use client";
 
-import { useReadContract, useReadContracts } from "wagmi";
-import { useAccount } from "wagmi";
+import { useReadContract, useReadContracts, useAccount, useChainId } from "wagmi";
 import { TIMESEAL_ABI, TIMESEAL_ADDRESS } from "@/lib/abis/timeseal";
 import type { Capsule } from "@/lib/contract";
 
 export function useReceivedCapsules() {
   const { address } = useAccount();
+  const chainId = useChainId();
   const { data: ids, refetch: refetchIds, ...restIds } = useReadContract({
     address: TIMESEAL_ADDRESS,
     abi: TIMESEAL_ABI,
     functionName: "getCapsulesByRecipient",
     args: address ? [address] : undefined,
+    chainId: chainId && chainId > 0 ? chainId : undefined,
   });
 
   const idsArray = ids && Array.isArray(ids) ? ids : [];
@@ -20,6 +21,7 @@ export function useReceivedCapsules() {
     abi: TIMESEAL_ABI,
     functionName: "getCapsule" as const,
     args: [id] as const,
+    chainId: chainId && chainId > 0 ? chainId : undefined,
   }));
 
   const { data: capsulesData, refetch: refetchCapsules } = useReadContracts({
@@ -46,11 +48,13 @@ export function useReceivedCapsules() {
 
 export function useSentCapsules() {
   const { address } = useAccount();
+  const chainId = useChainId();
   const { data: ids, refetch: refetchIds, ...restIds } = useReadContract({
     address: TIMESEAL_ADDRESS,
     abi: TIMESEAL_ABI,
     functionName: "getCapsulesBySender",
     args: address ? [address] : undefined,
+    chainId: chainId && chainId > 0 ? chainId : undefined,
   });
 
   const idsArray = ids && Array.isArray(ids) ? ids : [];
@@ -59,6 +63,7 @@ export function useSentCapsules() {
     abi: TIMESEAL_ABI,
     functionName: "getCapsule" as const,
     args: [id] as const,
+    chainId: chainId && chainId > 0 ? chainId : undefined,
   }));
 
   const { data: capsulesData, refetch: refetchCapsules } = useReadContracts({
@@ -84,10 +89,12 @@ export function useSentCapsules() {
 }
 
 export function usePublicCapsules() {
+  const chainId = useChainId();
   const { data: ids, refetch: refetchIds, ...restIds } = useReadContract({
     address: TIMESEAL_ADDRESS,
     abi: TIMESEAL_ABI,
     functionName: "getPublicCapsules",
+    chainId: chainId && chainId > 0 ? chainId : undefined,
   });
 
   const idsArray = ids && Array.isArray(ids) ? ids : [];
@@ -96,6 +103,7 @@ export function usePublicCapsules() {
     abi: TIMESEAL_ABI,
     functionName: "getCapsule" as const,
     args: [id] as const,
+    chainId: chainId && chainId > 0 ? chainId : undefined,
   }));
 
   const { data: capsulesData } = useReadContracts({
@@ -112,5 +120,5 @@ export function usePublicCapsules() {
     });
   }
 
-  return { capsules, ids: idsArray, ...restIds };
+  return { capsules, ids: idsArray, refetch: refetchIds, ...restIds };
 }

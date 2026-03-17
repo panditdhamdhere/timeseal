@@ -14,8 +14,8 @@ export default function CapsulesPage() {
   const { isConnected } = useAccount();
   const [addETHCapsuleId, setAddETHCapsuleId] = useState<bigint | null>(null);
 
-  const { capsules: received, refetch: refetchReceived } = useReceivedCapsules();
-  const { capsules: sent, refetch: refetchSent } = useSentCapsules();
+  const { capsules: received, refetch: refetchReceived, isLoading: loadingReceived, error: errorReceived } = useReceivedCapsules();
+  const { capsules: sent, refetch: refetchSent, isLoading: loadingSent, error: errorSent } = useSentCapsules();
 
   const { writeContract: openCapsule, data: openHash } = useWriteContract();
   const { isSuccess: openSuccess } = useWaitForTransactionReceipt({
@@ -61,14 +61,37 @@ export default function CapsulesPage() {
           </div>
         ) : (
           <div className="space-y-12">
-            <section className="animate-fade-in-up">
-              <h2 className="mb-4 text-xl font-semibold text-[var(--accent)]">
-                Capsules sent to you
-              </h2>
-              {received.length === 0 ? (
-                <p className="rounded-xl border border-[var(--border)] bg-[var(--surface)]/80 p-6 text-center text-[var(--muted)]">
-                  No capsules received yet.
+            {(errorReceived || errorSent) && (
+              <div className="animate-fade-in-up rounded-xl border border-amber-500/40 bg-amber-500/10 p-4">
+                <p className="text-sm text-amber-400">
+                  Could not load capsules. Make sure you&apos;re on the same network where the contract is deployed (Sepolia or mainnet) and that the contract address is correct in .env.local.
                 </p>
+                <button
+                  onClick={() => { refetchReceived(); refetchSent(); }}
+                  className="mt-3 rounded-lg bg-amber-500/20 px-3 py-1.5 text-sm text-amber-400 hover:bg-amber-500/30"
+                >
+                  Retry
+                </button>
+              </div>
+            )}
+            <section className="animate-fade-in-up">
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-[var(--accent)]">
+                  Capsules sent to you
+                </h2>
+                <button
+                  onClick={() => refetchReceived()}
+                  disabled={loadingReceived}
+                  className="text-xs text-[var(--muted)] hover:text-[var(--foreground)] disabled:opacity-50"
+                >
+                  {loadingReceived ? "Loading…" : "Refresh"}
+                </button>
+              </div>
+              {received.length === 0 ? (
+                <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)]/80 p-6 text-center text-[var(--muted)]">
+                  <p>No capsules received yet.</p>
+                  <p className="mt-2 text-xs opacity-80">Capsules others send to your address will appear here.</p>
+                </div>
               ) : (
                 <div className="space-y-4">
                   {received.map((capsule, i) => (
@@ -86,16 +109,23 @@ export default function CapsulesPage() {
             </section>
 
             <section className="animate-fade-in-up animate-delay-100">
-              <h2 className="mb-4 text-xl font-semibold text-[var(--accent)]">
-                Capsules you sent
-              </h2>
+              <div className="mb-4 flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-[var(--accent)]">
+                  Capsules you sent
+                </h2>
+                <button
+                  onClick={() => refetchSent()}
+                  disabled={loadingSent}
+                  className="text-xs text-[var(--muted)] hover:text-[var(--foreground)] disabled:opacity-50"
+                >
+                  {loadingSent ? "Loading…" : "Refresh"}
+                </button>
+              </div>
               {sent.length === 0 ? (
-                <p className="rounded-xl border border-[var(--border)] bg-[var(--surface)]/80 p-6 text-center text-[var(--muted)]">
-                  No capsules sent yet.{" "}
-                  <Link href="/create" className="text-[var(--accent)] hover:underline">
-                    Create one
-                  </Link>
-                </p>
+                <div className="rounded-xl border border-[var(--border)] bg-[var(--surface)]/80 p-6 text-center text-[var(--muted)]">
+                  <p>No capsules sent yet.{" "}<Link href="/create" className="text-[var(--accent)] hover:underline">Create one</Link></p>
+                  <p className="mt-2 text-xs opacity-80">If you just created one, ensure you&apos;re on the same network (e.g. Sepolia) where you created it.</p>
+                </div>
               ) : (
                 <div className="space-y-4">
                   {sent.map((capsule, i) => (
